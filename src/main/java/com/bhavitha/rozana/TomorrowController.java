@@ -2,6 +2,7 @@ package com.bhavitha.rozana;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,12 @@ public class TomorrowController {
     @PostMapping("/api/tomorrow/pause")
     public TomorrowTiffin pause() {
         paused = true;
+        return tiffin();
+    }
+
+    @DeleteMapping("/api/tomorrow/pause")
+    public TomorrowTiffin resume() {
+        paused = false;
         return tiffin();
     }
 
