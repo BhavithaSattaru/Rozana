@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rozana</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: #f4f1ea;
+      color: #1c1c1c;
+    }
+    main {
+      max-width: 24rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 2rem;
+    }
+    p { line-height: 1.4; }
+    button {
+      font-size: 1rem;
+      padding: 0.8rem 1rem;
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Tomorrow's tiffin</h1>
+  <p id="status">Loading…</p>
+  <button id="pause" type="button">Pause tomorrow</button>
+  <button id="resume" type="button">Resume tomorrow</button>
+</main>
+<script>
+  const status = document.querySelector("#status");
+
+  function show(tiffin) {
+    const cook = tiffin.paused ? "Do not cook." : "Cook " + tiffin.quantity + ".";
+    status.textContent = tiffin.serviceDate + " · " + tiffin.meal + " · " + tiffin.centre + " · " + cook;
+  }
+
+  async function call(path, method) {
+    const response = await fetch(path, { method: method });
+    show(await response.json());
+  }
+
+  document.querySelector("#pause").addEventListener("click", function () {
+    call("/api/tomorrow/pause", "POST");
+  });
+
+  document.querySelector("#resume").addEventListener("click", function () {
+    call("/api/tomorrow/pause", "DELETE");
+  });
+
+  call("/api/tomorrow", "GET");
+</script>
+</body>
+</html>
